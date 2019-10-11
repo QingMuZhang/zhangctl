@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>jquery遍历</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="jquery-3.4.1.js"></script>
+</head>
+
+<body>
+    <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+    <div>
+            
+            <p>111<a href="https://www.baidu.com">baidu网址</a></p>
+            <p class="test">这是用来试验的话</p>
+            <input type="text" value="我是内容">
+            <button id="test1">引用父元素</button>
+            <button id="test2">引用子元素</button>
+            <button id="test3">引用兄弟元素</button>
+            <button id="test4">过滤</button>
+             <p class="testt">这是用来试验的话2</p>
+    </div>
+    <script>
+       
+        $(document).ready(function () {
+           
+            //遍历父元素
+            $("#test1").click(function () {
+                //直接父元素
+                $("a").parent().css('color','blue')
+                //所有祖先元素
+                $("a").parents().css('background-color','red');
+                //所有祖先元素中的p元素
+               $("a").parents('p').css('font-size','40px');
+               //从a标签到div的所有祖先元素
+               $('a').parentsUntil('div').css("border","2px solid yellow")
+            });
+
+            //遍历子元素
+            $('#test2').click(function(){
+                //所有直接子元素，孙子不算
+                $('div').children().css('color','red');
+                //所有直接子元素中的class为test的p元素
+                $('div').children('p.test').css({'background-color':'blue'});
+                //返回 <div> 的所有后代
+                $('div').find('*').css('font-size','30px')
+            });
+
+            //遍历兄弟元素
+            $('#test3').click(function(){
+                //所有同胞中的p元素
+                $("input").siblings("p");
+                //input下一个同胞元素
+                $('input').next();
+                //input之后的所有同胞p元素
+                $('input').nextAll('p');
+                //介于 input 与 p元素之间的所有同胞元素
+                $('input').nextUntil('p')
+                //prev(), prevAll() 以及 prevUntil() 方法的工作方式与上面的方法类似，只不过方向相反而已
+            });
+
+            $('#test4').click(function(){
+                //第一个p元素
+                $("div p").first().css("background-color","yellow");
+                //最后一个p元素
+                $("div p").last().css("background-color","yellow");
+                //第二个p元素
+                $("p").eq(1);
+                //class='test'的p元素
+                $("p").filter(".test");
+                //class不等于'test'的p元素
+                $("p").not(".test");
+                //选取索引值不为 1 的 p 元素，并把背景颜色设置为黄色
+                $("p").not(":eq(1)").css("background-color","yellow");
+            })
+
+        })
+    </script>
+
+</body>
+
+</html>

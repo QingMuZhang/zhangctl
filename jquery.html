@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>jquery的使用</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="jquery-3.4.1.js"></script>
+</head>
+
+<body>
+    <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+    
+    <p><a href="https://www.baidu.com" id="attr12">baidu网址</a></p>
+    <p class="test">这是用来试验的话</p>
+    <input type="text" value="我是内容">
+    <input type="text" value="我是内容2">
+    <button id="attr1">点击网址变化</button>
+    <button id="attr2">获取内容</button>
+    <button id="attr3">点击添加元素</button>
+    <button id="attr4">点击删除元素</button>
+    <script>
+        
+        $(document).ready(function () {
+            //attr()获取属性并修改attr（）回调函数
+            $("#attr1").click(function () {
+                $("#attr12").attr("href", function (i, origvalue) {
+                    return origvalue + '/jquery';
+                })
+            });
+            //获取内容和属性
+            $("#attr2").click(function(){
+                alert($("p").text());    //返回内容，会返回所有p标签文本内容
+                alert($("p:eq(1)").html());   //返回内容和标签，:eq()可以选取第几个元素，0为第一个
+                alert($("input:eq(1)").val())  //返回value值
+            })
+            //添加元素
+            $("#attr3").click(function () {
+                var txt2=$("<span></span>").text("添加一个span元素");
+                $(".test").append("<b>在p标签里面末尾添加</b>",txt2).prepend("在p标签里面开头添加");
+               $(".test").after("在p标签外面后面添加元素").before("在p标签外面前面添加元素") 
+            });
+            //删除元素
+            $("#attr4").click(function (){
+                $("p").remove(".test");  //删除class="test"的p元素及其子元素，接受一个参数用来过滤
+                $("p").empty();  //删除子元素
+            })
+        })
+    </script>
+
+</body>
+
+</html>

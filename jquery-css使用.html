@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>jQuery-css使用</title>
+    <script src="jquery-3.4.1.js"></script>
+    <style type="text/css">
+        .red {
+            color: aqua;
+        }
+
+        .strong {
+            font-size: 20px !important;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>标题</h2>
+    <p>内容1</p>
+    <p>内容2</p>
+    <button id="css1">增加颜色和字体class</button>
+    <button id="css2">去掉h2标签颜色的class</button>
+    <button id="css3">toggle class</button>
+    <button id="css4">查看属性值</button>
+    <button id="css5">修改属性值</button>
+    <script>
+        $("document").ready(function () {
+            //增加css类
+            $("#css1").click(function () {
+                $("h2,p:eq(0)").addClass("red strong")
+            });
+            //删除class
+            $("#css2").click(function () {
+                $("h2").removeClass('red')
+            });
+            //添加或删除class
+            $("#css3").click(function () {
+                $("h2,p").toggleClass('red')
+            });
+            //查看属性值
+            $("#css4").click(function(){
+                alert($('p').css("font-size"))
+            });
+            //修改属性值
+            $('#css5').click(function(){
+                $('p').css({'background-color':'red','font-size':'30px'})  //产生的是style的css内容，比class的优先级高，所以之后再增加类覆盖不掉样式,要用important
+            })
+
+        })
+    </script>
+</body>
+
+</html>
