@@ -27,42 +27,30 @@
             alert(but);
             but.onclick = function (eve) {
                 //url?key=value&key=value
-               ajax('POST','ajax-get.php',{
-                   'user':'1234',
-                   'password':'123456'
-               },3000,function(xhr){
-                alert('xhr.responseTest');
-               },function(xhr){
-                   alert('请求失败');
-               })
-            }
-        }
-
-        $(document).ready(function () {
-            //attr()获取属性并修改attr（）回调函数
-            $("#attr1").click(function () {
-                $("#attr12").attr("href", function (i, origvalue) {
-                    return origvalue + '/jquery';
+                ajax({
+                    type: 'POST',
+                    url: 'ajax-get.php',
+                    data: {
+                        'user': '1234',
+                        'password': '123456'
+                    },
+                    timeout: 3000,
+                    success: function (xhr) {
+                        alert('xhr.responseTest');
+                        var str=xhr.responseTest;
+                        //在低版本的ie中，不可以使用原生JSON.parse()方法，但可以使用json2.js框架兼容
+                        var obj=JSON.parse(str);
+                        /*后端传的数据为非标准JSON数据时
+                         var obj=eval('("+msg+")') */
+                    },
+                    error: function (xhr) {
+                        alert('请求失败');
+                    }
                 })
-            });
-            //获取内容和属性
-            $("#attr2").click(function () {
-                alert($("p").text()); //返回内容，会返回所有p标签文本内容
-                alert($("p:eq(1)").html()); //返回内容和标签，:eq()可以选取第几个元素，0为第一个
-                alert($("input:eq(1)").val()) //返回value值
-            })
-            //添加元素
-            $("#attr3").click(function () {
-                var txt2 = $("<span></span>").text("添加一个span元素");
-                $(".test").append("<b>在p标签里面末尾添加</b>", txt2).prepend("在p标签里面开头添加");
-                $(".test").after("在p标签外面后面添加元素").before("在p标签外面前面添加元素")
-            });
-            //删除元素
-            $("#attr4").click(function () {
-                $("p").remove(".test"); //删除class="test"的p元素及其子元素，接受一个参数用来过滤
-                $("p").empty(); //删除子元素
-            })
-        })
+            }
+            document.cookie='name=zs;path=/;domain=127.0.0.1'
+            //多条cookie不能同时设置
+        }
     </script>
 
 </body>

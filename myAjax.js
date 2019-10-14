@@ -1,17 +1,17 @@
-function objTostr(obj1) {
-    obj1.t = new Date().getTime()
+function objTostr(data) {
+    data.t = new Date().getTime()
     var arr = [];
-    for (var key in obj1) {
+    for (var key in data) {
         //发送请求时url不能出现中文，需要转码
-        arr.push(encodeURIComponent(key) + "=" + encodeURIComponent(obj1[key]));
+        arr.push(encodeURIComponent(key) + "=" + encodeURIComponent(data[key]));
     }
     return arr.join('&');
 }
 
 
-function ajax(url, obj1, timeout, success, error) {
+function ajax(option) {
     //0.将对象转化为字符串
-    var str = objTostr(obj1);
+    var str = objTostr(option.data);
     //1.创建一个异步对象
     var xhr;
     if (window.XMLHttpRequest)
@@ -20,10 +20,19 @@ function ajax(url, obj1, timeout, success, error) {
         //IE不同点1：ie5,ie6
         xhr = new ActiveXObject('Microsoft.XMLHTTP');
     //2.设置请求方式和请求地址,最后表示异步
-    //IE不同点2：ie通过Ajax发送get请求，会默认一个URL只有一个结果，可使用Math.random()或new Date().getTime()生成一个随机数
-    xhr.open('GET', url + '?' + str, true);
-    //3.发送请求
-    xhr.send();
+    if (option.type.toLowerCase() === 'get') {
+        //IE不同点2：ie通过Ajax发送get请求，会默认一个URL只有一个结果，可使用Math.random()或new Date().getTime()生成一个随机数
+        xhr.open(option.type, option.url + '?' + str, true);
+        //3.发送请求
+        xhr.send();
+    } else {
+        //IE不同点2：ie通过Ajax发送get请求，会默认一个URL只有一个结果，可使用Math.random()或new Date().getTime()生成一个随机数
+        xhr.open(option.type, option.url, true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        //3.发送请求
+        xhr.send(str);
+    }
+
     //4.监听状态变化
     xhr.onreadystatechange = function () {
         /*
@@ -36,18 +45,17 @@ function ajax(url, obj1, timeout, success, error) {
         if (xhr.readystate === 4) {
             clearInterval(timer);
             if (xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {
-                success(xhr);
+                option.success(xhr);
             } else {
-                error(xhr);
+                option.error(xhr);
             }
         }
     }
     //判断是否传入超时时间
-    if (timeout)
-    {
-        timer=setInterval(function(){
+    if (option.timeout) {
+        timer = setInterval(function () {
             xhr.abort();
             clearInterval(timer);
-        },timeout)
+        }, option.timeout)
     }
 }
